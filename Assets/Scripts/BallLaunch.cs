@@ -3,7 +3,7 @@ using UnityEngine;
 public class BallLaunch : MonoBehaviour
 {
     private Rigidbody ballRb;
-    [SerializeField] private float ballSpeed = 100f;
+    [SerializeField] public float ballSpeed = 100f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

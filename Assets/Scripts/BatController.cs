@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,22 +8,25 @@ public class BatController : MonoBehaviour
     private float finalRotation;
     private Rigidbody batterRb;
     private bool isSwingActive = false;
+    private bool hasSwung = false;
+    [SerializeField] private quaternion initRotation;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         batterRb = GetComponent<Rigidbody>();
         batterRb.centerOfMass = new Vector3(0, 0, 0);
+        initRotation = transform.rotation;
 
 
     }
 
     void Update()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && !hasSwung)
         {
-            Debug.Log("swing");
+            //Debug.Log("swing");
             isSwingActive = true;
-            
+            hasSwung = true;
         }
     }
 
@@ -36,19 +40,17 @@ public class BatController : MonoBehaviour
         }
         if (transform.rotation.eulerAngles.z > 60f)
         {
-            Debug.Log("Stop");
+            //Debug.Log("Stop");
             batterRb.angularVelocity = Vector3.zero;
-            isSwingActive = false;
         }
     }
 
-    void Swing()
+
+    public void Reset()
     {
-        Debug.Log("Swing");
-        if (!isSwingActive)
-        {
-            isSwingActive = true;
-        }
+        transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
+        hasSwung = false;
+        isSwingActive = false;
     }
 
 }

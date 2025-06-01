@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     private bool isBallInPlay = false;
     private bool isBallLaunching = false;
     private bool isFirstRound = false;
+    private bool isGameStarted = false;
 
     private int gemsNum = 3;
     private IEnumerator waitToFire;
@@ -29,13 +30,18 @@ public class GameManager : MonoBehaviour
         isFirstRound = true;
         isBallInPlay = false;
         isBallLaunching = false;
-        StartRound();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
 
+        if (!isGameStarted)
+        {
+            StartRound();
+            isGameStarted = true;
+        }
         scoreText.text = "Score: " + score;
         ballsText.text = "Balls: " + swingsLeft;
 
@@ -60,6 +66,7 @@ public class GameManager : MonoBehaviour
 
         }
         gemsNum = 2 + score / 10;
+
         if (isFirstRound)
         {
             gemsNum += 1;
@@ -70,8 +77,10 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < gemsNum; i++)
         {
             GameObject pooledGems = ObjectPooler.SharedInstance.GetPooledObject();
+            Debug.Log(pooledGems);
             if (pooledGems != null)
             {
+                Debug.Log(i);
                 pooledGems.SetActive(true); // activate it
                 pooledGems.transform.position = GenerateRandomPosition(); // position it
             }
